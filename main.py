@@ -63,18 +63,41 @@ graph = applyAlgo1(sets2, 3)
 
 
 def stats():
-    for delta in range(1, 10):
-        tries = {}
-        for _ in range(0, 10):
-            for k in range(10, 200, 10):
-                sets = generateGraph(10, 20)
-                res, numbers_of_edges = applyAlgo1(sets, delta)
-                if res == True and numbers_of_edges <= k:
-                    if not k in tries:
-                        tries[k] = 1
-                    else:
-                        tries[k] += 1
-        print(delta, tries)
+    ts = [20, 20, 20, 30, 30, 30]
+    ps = [10, 15, 20, 10, 15, 20]
+    for i in range(0, 5):
+        t = ts[i]
+        p = ps[i]
+        print('t = ', t, 'p = ', p)
+        bo = 'l |' * 21
+        print('\\begin{center} \\begin{tabular}{|' + bo +  '} \hline')
+        up = '$\Delta$ $k$ &'
+        for i in range(250, 450, 10):
+            up += str(i) + ' & '
+        print(up[:-2], '\\\ \hline')
+        for delta in range(1, 10):
+            tries = {}
+            for _ in range(0, 10):
+                for k in range(10, 400, 10):
+                    sets = generateGraph(t=t, p=p)
+                    res, numbers_of_edges = applyAlgo1(sets, delta)
+                    if res == True and numbers_of_edges <= k:
+                        if not k in tries:
+                            tries[k] = 1
+                        else:
+                            tries[k] += 1
+            string = str(delta) + ' & '
+
+
+            for i in range(250, 450, 10):
+                if i in tries:
+                    string += str(tries[i]* 10) + '\% & '
+                else:
+                    string += str(0) + ' & '
+            print(string[:-2], '\\\ \hline')
+        print('\end{tabular}\end{center}')
+        print('\n')
+
 
 stats()
             
