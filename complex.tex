@@ -259,6 +259,70 @@ $j \in \left\{1,...,t\right\} , i\ne j$ sont les suivantes :
     \item Dans un sous-complexe, on ne peut pas avoir plus de 2 protéines si elles
 appartiennent aussi à un autre sous-complexe.
 \end{itemize}
+\section{Question 5}
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData {$G$ a graph, $sets$ the sets of nodes, $\Delta$ the max degree}
+\KwResult{$True$ if the degree of $G$ is less or equals than $\Delta$, $False$ otherwise}
+\Begin{
+	\For{set \textbf{in} sets}{
+		last\_vertex $\leftarrow$ $None$\;
+		\For{vertex \textbf{in} set}{
+			\If{\textbf{not} $G$.has\_node($vertex$)}{
+				$G$.add\_node($vertex$)\;
+			}
+			\If{last\_vertex != $None$}{
+				$G$.add\_edge($vertex$, $last\_vertex$)\;
+			}
+			last\_vertex $\leftarrow$ $vertex$\;
+		}
+	}
+	\For{node \textbf{in} $G$.nodes()}{
+		\If{$G$.degree($node$) > $\Delta$ }{
+			\textbf{return} $False$, $None$\;
+		}
+	}
+	\textbf{return} $True$, len($G$.edges())\;
+}
+	\caption{Problème de décision pour IC, version 1}
+\end{algorithm}
+\paragraph{}
+Cet algorithme a une complexité de $\mathcal{O}(n^2)$. 
+En effet, pour chacun des sous complexes, on parcourt les sommets associés.
+Pour chacun d'entre eux, on vérifie si ce sommet existe dans le graphe, et dans le cas contraire, on le cree.
+Ensuite, on vérifie si un précédent sommets existe, et on crée une arrête entre les deux sommets.
+Finalement, on met à jour le precédédent sommet avec l'actuel, et on repète l'operation.
+A la fin du programme, on parcourt notre ensemble de noeud, et on en vérifie le degrée. S'il est 
+supérieur à $\Delta$, alors on renvoie $False$. Si rien n'est retourné, alors la solution est correcte et on revoie $True$
+
+\section{Question 6}
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\KwData {$vertices$ 100 nodes, $sets$ the sets of nodes, $p$ number of node per set, $t$ number of sets}
+\KwResult{Samples of IC problem}
+\Begin{
+	\For{0 \KwTo $t$}{
+		s = \textbf{set()}\;
+		\While{len(s) != $p$}{
+			s.add(\textbf{getRandomVertex}($vertices$))\;
+		}
+		$sets$.append(s)
+	}
+	\textbf{return} $sets$\;
+}
+	\caption{Génération des instances pour IC}
+\end{algorithm}
+\paragraph{}
+Pour générer les instances de IC, on commence par creer un tableau d'entier de 1 à 100.
+Ensuite, on boucle $t$ fois (correspondant aux $t$ sous complexes). 
+Dans cette boucle, on crée un ensemble vide (avec le $set$ de Python), et tant que le sous ensemble n'est 
+pas d'une taille de $p$, alors on essaie d'y ajouter un element pioché aléatoirement dans notre tableau.
+Si le $randomizer$ "pioche" un element déjà présent dans le set actuel, alors l'ajout n'aura pas lieu 
+puisque les éléments d'un $set$ sont uniques. On obtient donc bien $t$ sous ensembles et $p$ éléments distincs.
+
+
 
 \section{Question 8}
 \begin{tabular}{ | l | l | l | l | l | l | l | l | l | l | l |}
@@ -354,68 +418,5 @@ $\Delta$ $k$ &250 & 260 & 270 & 280 & 290 & 300 & 310 & 320 & 330 & 340 & 350 & 
 8 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\ \hline
 9 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0  \\ \hline
 \end{tabular}\end{center}
-\section{Question 5}
-
-\begin{algorithm}[H]
-\SetAlgoLined
-\KwData {$G$ a graph, $sets$ the sets of nodes, $\Delta$ the max degree}
-\KwResult{$True$ if the degree of $G$ is less or equals than $\Delta$, $False$ otherwise}
-\Begin{
-	\For{set \textbf{in} sets}{
-		last\_vertex $\leftarrow$ $None$\;
-		\For{vertex \textbf{in} set}{
-			\If{\textbf{not} $G$.has\_node($vertex$)}{
-				$G$.add\_node($vertex$)\;
-			}
-			\If{last\_vertex != $None$}{
-				$G$.add\_edge($vertex$, $last\_vertex$)\;
-			}
-			last\_vertex $\leftarrow$ $vertex$\;
-		}
-	}
-	\For{node \textbf{in} $G$.nodes()}{
-		\If{$G$.degree($node$) > $\Delta$ }{
-			\textbf{return} $False$, $None$\;
-		}
-	}
-	\textbf{return} $True$, len($G$.edges())\;
-}
-	\caption{Problème de décision pour IC, version 1}
-\end{algorithm}
-\paragraph{}
-Cet algorithme a une complexité de $\mathcal{O}(n^2)$. 
-En effet, pour chacun des sous complexes, on parcourt les sommets associés.
-Pour chacun d'entre eux, on vérifie si ce sommet existe dans le graphe, et dans le cas contraire, on le cree.
-Ensuite, on vérifie si un précédent sommets existe, et on crée une arrête entre les deux sommets.
-Finalement, on met à jour le precédédent sommet avec l'actuel, et on repète l'operation.
-A la fin du programme, on parcourt notre ensemble de noeud, et on en vérifie le degrée. S'il est 
-supérieur à $\Delta$, alors on renvoie $False$. Si rien n'est retourné, alors la solution est correcte et on revoie $True$
-
-\section{Question 6}
-
-\begin{algorithm}[H]
-\SetAlgoLined
-\KwData {$vertices$ 100 nodes, $sets$ the sets of nodes, $p$ number of node per set, $t$ number of sets}
-\KwResult{Samples of IC problem}
-\Begin{
-	\For{0 \KwTo $t$}{
-		s = \textbf{set()}\;
-		\While{len(s) != $p$}{
-			s.add(\textbf{getRandomVertex}($vertices$))\;
-		}
-		$sets$.append(s)
-	}
-	\textbf{return} $sets$\;
-}
-	\caption{Génération des instances pour IC}
-\end{algorithm}
-\paragraph{}
-Pour générer les instances de IC, on commence par creer un tableau d'entier de 1 à 100.
-Ensuite, on boucle $t$ fois (correspondant aux $t$ sous complexes). 
-Dans cette boucle, on crée un ensemble vide (avec le $set$ de Python), et tant que le sous ensemble n'est 
-pas d'une taille de $p$, alors on essaie d'y ajouter un element pioché aléatoirement dans notre tableau.
-Si le $randomizer$ "pioche" un element déjà présent dans le set actuel, alors l'ajout n'aura pas lieu 
-puisque les éléments d'un $set$ sont uniques. On obtient donc bien $t$ sous ensembles et $p$ éléments distincs.
-
 
 \end{document}
