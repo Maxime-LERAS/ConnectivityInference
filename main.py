@@ -7,7 +7,7 @@ import random
 t entier nombre de sous complexe
 '''
 def generateGraph(p: int, t: int):
-    vertices = [ i for i in range(0, 100)]
+    vertices = [ i for i in range(0, 200)]
 
     def getRandomVertex():
         return vertices[random.randint(0, len(vertices) - 1)]
@@ -36,9 +36,9 @@ def applyAlgo1(sets, delta):
             last_vertex = vertex
         for node in g.nodes():
             if g.degree(node) > delta:
-                return False
+                return False, None
 
-    return True
+    return True, len(g.edges())
     
 
 s1 = set([1,2,3])
@@ -58,7 +58,23 @@ sets2 = [s21, s22, s23,s24]
 
 graph = applyAlgo1(sets2, 3)
 
-print(graph)
 #nx.draw(graph, with_labels=True)
 #plt.show()
 
+
+def stats():
+    for delta in range(1, 10):
+        tries = {}
+        for _ in range(0, 10):
+            for k in range(10, 200, 10):
+                sets = generateGraph(10, 20)
+                res, numbers_of_edges = applyAlgo1(sets, delta)
+                if res == True and numbers_of_edges <= k:
+                    if not k in tries:
+                        tries[k] = 1
+                    else:
+                        tries[k] += 1
+        print(delta, tries)
+
+stats()
+            
