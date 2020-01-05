@@ -34,9 +34,9 @@ def applyAlgo1(sets, delta):
             if last_vertex != None:
                 g.add_edge(vertex, last_vertex)
             last_vertex = vertex
-        for node in g.nodes():
-            if g.degree(node) > delta:
-                return False, None
+    for node in g.nodes():
+        if g.degree(node) > delta:
+            return False, None
 
     return True, len(g.edges())
     
